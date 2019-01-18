@@ -21,6 +21,7 @@
 import six
 
 import os
+import inspect
 import unittest
 import shutil
 import tempfile
@@ -225,7 +226,7 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
     try:
       os.mkdir("ಠ")
       path = "ಠ/foobar"
-      if os.path.sep == "\\":
+      if os.path.sep == "\\" and 'encoding' in inspect.getfullargspec(open)[0]:
         with open(path, "w", encoding="utf-8") as fp:
           fp.write(path)
       else:
