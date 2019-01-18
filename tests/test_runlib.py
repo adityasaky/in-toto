@@ -226,7 +226,7 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
     try:
       os.mkdir("ಠ")
       path = "ಠ/foobar"
-      if os.path.sep == "\\" and 'encoding' in inspect.signature.parameters:
+      if os.path.sep == "\\" and 'encoding' in inspect.signature(open).parameters:
         with open(path, "w", encoding="utf-8") as fp:
           fp.write(path)
       else:
