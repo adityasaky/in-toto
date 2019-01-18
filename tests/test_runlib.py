@@ -225,8 +225,12 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
     try:
       os.mkdir("ಠ")
       path = "ಠ/foobar"
-      with open(path, "w") as fp:
-        fp.write(path)
+      if os.path.sep == "\\":
+        with open(path, "w", encoding="utf-8") as fp:
+          fp.write(path)
+      else:
+        with open(path, "w") as fp:
+          fp.write(path)
 
       # Attempt to left strip the path now that the file has been created
       lstrip_paths = "ಠ/"
