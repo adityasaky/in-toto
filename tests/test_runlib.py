@@ -225,13 +225,12 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
     # Try to create a file with unicode character
     try:
       os.mkdir("ಠ")
-      path = "ಠ/foobar"
-      with open(path, "w") as fp:
-        fp.write(path)
+      path = "ಠ/foo"
+      shutil.copy("foo", path)
 
       # Attempt to left strip the path now that the file has been created
       lstrip_paths = "ಠ/"
-      expected_artifacts = sorted(["foobar"])
+      expected_artifacts = sorted(["foo"])
       artifacts_dict = record_artifacts_as_dict(["./ಠ/"],
           lstrip_paths=lstrip_paths)
       self.assertListEqual(sorted(list(artifacts_dict.keys())),
@@ -246,13 +245,12 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
     # Try to create a file with unicode character
     try:
       os.mkdir("ಠ")
-      path = "ಠ/foobar"
-      with open(path, "w", encoding="utf-8") as fp:
-        fp.write(path)
+      path = "ಠ/foo"
+      shutil.copy("foo", path)
 
       # Attempt to left strip the path now that the file has been created
       lstrip_paths = "ಠ/"
-      expected_artifacts = sorted(["foobar"])
+      expected_artifacts = sorted(["foo"])
       artifacts_dict = record_artifacts_as_dict(["./ಠ/"],
                                                 lstrip_paths=lstrip_paths)
       self.assertListEqual(sorted(list(artifacts_dict.keys())),
