@@ -21,7 +21,3 @@ class LinkNotFoundError(Error):
 
 class UnsupportedKeyTypeError(Error):
   """Indicates that the specified key type is not yet supported. """
-
-class KeyNotUniqueError(Error):
-  """Indicates that a key obtained after left stripping a prefix
-  already exists in the dictionary. """
