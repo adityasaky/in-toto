@@ -232,10 +232,6 @@ def record_artifacts_as_dict(artifacts, exclude_patterns=None,
             stripped_artifact = artifact[len(prefix):]
             all_prefixes_applied.append(stripped_artifact)
         all_prefixes_applied.sort(key=len)
-        if all_prefixes_applied[0] in artifacts_dict:
-          raise in_toto.exceptions.KeyNotUniqueError("Key '{}' obtained "
-              "after left stripping is not unique".format(
-              all_prefixes_applied[0]))
         artifacts_dict[all_prefixes_applied[0]] = _hash_artifact(artifact,
             normalize_line_endings=normalize_line_endings)
       else:
@@ -301,10 +297,6 @@ def record_artifacts_as_dict(artifacts, exclude_patterns=None,
                 stripped_filepath = normalized_filepath[len(lstrip_paths):]
                 all_prefixes_applied.append(stripped_filepath)
             all_prefixes_applied.sort(key=len)
-            if all_prefixes_applied[0] in artifacts_dict:
-              raise in_toto.exceptions.KeyNotUniqueError("Key '{}' obtained "
-                  "after left stripping is not unique".format(
-                  all_prefixes_applied[0]))
             artifacts_dict[all_prefixes_applied[0]] = _hash_artifact(filepath,
                 normalize_line_endings=normalize_line_endings)
           else:
