@@ -192,7 +192,7 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
 
 
   def test_lstrip_paths_valid_prefix_directory(self):
-    lstrip_paths = "subdir/subsubdir/"
+    lstrip_paths = ["subdir/subsubdir/"]
     expected_artifacts = sorted(["bar", "foo", "subdir/foosub1",
         "subdir/foosub2", "foosubsub"])
     artifacts_dict = record_artifacts_as_dict(["."],
@@ -202,7 +202,7 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
 
 
   def test_lstrip_paths_invalid_prefix_directory(self):
-    lstrip_paths = "not/a/directory/"
+    lstrip_paths = ["not/a/directory/"]
     expected_artifacts = sorted(["bar", "foo", "subdir/foosub1",
                                  "subdir/foosub2", "subdir/subsubdir/foosubsub"])
     artifacts_dict = record_artifacts_as_dict(["."],
@@ -212,7 +212,7 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
 
 
   def test_lstrip_paths_valid_prefix_file(self):
-    lstrip_paths = "subdir/subsubdir/"
+    lstrip_paths = ["subdir/subsubdir/"]
     expected_artifacts = sorted(["foosubsub"])
     artifacts_dict = record_artifacts_as_dict(["./subdir/subsubdir/foosubsub"],
         lstrip_paths=lstrip_paths)
@@ -229,7 +229,7 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
       shutil.copy("foo", path)
 
       # Attempt to left strip the path now that the file has been created
-      lstrip_paths = "ಠ/"
+      lstrip_paths = ["ಠ/"]
       expected_artifacts = sorted(["foo"])
       artifacts_dict = record_artifacts_as_dict(["./ಠ/"],
           lstrip_paths=lstrip_paths)
@@ -249,7 +249,7 @@ class TestRecordArtifactsAsDict(unittest.TestCase):
       shutil.copy("foo", path)
 
       # Attempt to left strip the path now that the file has been created
-      lstrip_paths = "ಠ/"
+      lstrip_paths = ["ಠ/"]
       expected_artifacts = sorted(["foo"])
       artifacts_dict = record_artifacts_as_dict(["./ಠ/"],
                                                 lstrip_paths=lstrip_paths)
