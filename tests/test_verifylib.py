@@ -1827,6 +1827,14 @@ class TestGetSummaryLink(unittest.TestCase):
         self.package_link.signed.byproducts.get("return-value"))
 
 
+class TestKeyIdVerificationSSL(unittest.TestCase):
+
+  def verify_keyid_validation_ssl(self):
+    demo_files = os.path.join(
+      os.path.dirname(os.path.realpath(__file__)), "demo_files")
+    metadata = Metablock.load(os.path.join(demo_files, "demo-invalid.layout.template"))
+    metadata.signed.validate()
+
 
 if __name__ == "__main__":
   unittest.main()
