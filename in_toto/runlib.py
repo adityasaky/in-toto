@@ -247,6 +247,24 @@ def record_artifacts_as_dict(artifacts, exclude_patterns=None,
 
   # Iterate over remaining normalized artifact paths
   for artifact in norm_artifacts:
+
+    if artifact.startswith('cnab+json:'):
+      # we need a better way to "register" URIs but that has a whole other set of things to consider
+      # a sustainable model may be to add a --resolver parameter that points to a resolver repository? lots to think about here
+      # either way, this is HILARIOUSLY BAD
+      # FIXME
+      from in_toto.resolvers.cnab_json import hash_artifacts
+      artifacts_dict.update(hash_artifacts(artifact))
+
+      # we then record bundle.json as the file itself, without the URI identifier
+      # FIXME: DRY
+      artifact = artifact.split('cnab+json:')[1].replace('\\', '/')
+      key = _apply_left_strip(artifact, artifacts_dict, lstrip_paths)
+      artifacts_dict[key] = _hash_artifact(artifact,
+          normalize_line_endings=normalize_line_endings)
+
+      continue 
+
     if os.path.isfile(artifact):
       # FIXME: this is necessary to provide consisency between windows
       # filepaths and *nix filepaths. A better solution may be in order
