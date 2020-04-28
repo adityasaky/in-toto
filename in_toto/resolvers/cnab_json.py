@@ -1,8 +1,10 @@
 import json
+from jsonpath_ng import parse
 import securesystemslib.hash
 
 
-SEPARATOR = '/'
+SEPARATOR = '.'
+SELECTOR = '$'
 
 
 def _hash_artifact(data, hash_algorithms):
@@ -34,6 +36,8 @@ def hash_artifacts(generic_uri, hash_algorithms=['sha256']):
 def _flatten(dictionary, parent_key='', separator=SEPARATOR):
   all_uris = []
   for key, value in dictionary.items():
+    if SEPARATOR in key:
+      key = '["' + key + '"]'
     new_key = parent_key + separator + key if parent_key else key
     # uncomment line below to record intermediate dictionaries, comment out else below
     # all_uris.append(new_key)
@@ -45,18 +49,11 @@ def _flatten(dictionary, parent_key='', separator=SEPARATOR):
 
 
 def resolve_uri(generic_uri, bundle):
-  all_uris = _flatten(bundle)
-  return [generic_uri + '$' + uri for uri in all_uris]
+  all_uris = _flatten(bundle, parent_key=SELECTOR)
+  return [generic_uri + uri for uri in all_uris]
 
 
 def get_hashable_representation(generic_uri, bundle):
-  key = generic_uri.split('$')[1]
-  
-  if not SEPARATOR in key:
-    return bundle[key]
-  else:
-    expansion = key.split(SEPARATOR)
-    v = bundle
-    for k in expansion:
-      v = v[k]
-    return v
+  key = SELECTOR + generic_uri.split(SELECTOR)[1]
+  json_expression = parse(key)
+  return json_expression.find(bundle)[0].value
