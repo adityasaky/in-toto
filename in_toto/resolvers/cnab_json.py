@@ -5,6 +5,7 @@ import securesystemslib.hash
 
 SEPARATOR = '.'
 SELECTOR = '$'
+JSONPATH_RESERVED = ['.', '$', '+', '?', ':']
 
 
 def _hash_artifact(data, hash_algorithms):
@@ -36,7 +37,7 @@ def hash_artifacts(generic_uri, hash_algorithms=['sha256']):
 def _flatten(dictionary, parent_key='', separator=SEPARATOR):
   all_uris = []
   for key, value in dictionary.items():
-    if SEPARATOR in key:
+    if len(set(JSONPATH_RESERVED) & set(list(key))):
       key = '["' + key + '"]'
     new_key = parent_key + separator + key if parent_key else key
     # uncomment line below to record intermediate dictionaries, comment out else below
