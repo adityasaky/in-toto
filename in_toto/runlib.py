@@ -256,13 +256,6 @@ def record_artifacts_as_dict(artifacts, exclude_patterns=None,
       from in_toto.resolvers.cnab_json import hash_artifacts
       artifacts_dict.update(hash_artifacts(artifact))
 
-      # we then record bundle.json as the file itself, without the URI identifier
-      # FIXME: DRY
-      artifact = artifact.split('cnab+json:')[1].replace('\\', '/')
-      key = _apply_left_strip(artifact, artifacts_dict, lstrip_paths)
-      artifacts_dict[key] = _hash_artifact(artifact,
-          normalize_line_endings=normalize_line_endings)
-
       continue 
 
     if os.path.isfile(artifact):
