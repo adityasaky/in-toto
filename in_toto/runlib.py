@@ -247,6 +247,12 @@ def record_artifacts_as_dict(artifacts, exclude_patterns=None,
 
   # Iterate over remaining normalized artifact paths
   for artifact in norm_artifacts:
+
+    if artifact.startswith('github:'):
+      from in_toto.resolvers.github import hash_artifacts
+      artifacts_dict.update(hash_artifacts(artifact))
+      continue
+
     if os.path.isfile(artifact):
       # FIXME: this is necessary to provide consisency between windows
       # filepaths and *nix filepaths. A better solution may be in order
