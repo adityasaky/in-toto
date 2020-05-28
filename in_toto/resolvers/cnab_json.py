@@ -1,6 +1,7 @@
 import json
 from jsonpath_ng import parse
 import securesystemslib.hash
+import securesystemslib.formats
 import re
 
 
@@ -13,7 +14,7 @@ def _hash_artifact(data, hash_algorithms):
 
   for algorithm in hash_algorithms:
     digest_object = securesystemslib.hash.digest(algorithm=algorithm)
-    digest_object.update(str(data).encode('utf-8'))
+    digest_object.update(securesystemslib.formats.encode_canonical(data).encode('utf-8'))
     hash_object[algorithm] = digest_object.hexdigest()
 
   return hash_object
