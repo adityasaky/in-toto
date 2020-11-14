@@ -1,6 +1,6 @@
 securesystemslib[crypto,pynacl]>=0.14.1
 attrs
-python-dateutil
+#python-dateutil
 iso8601
 six
 pathspec
