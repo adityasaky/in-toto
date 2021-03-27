@@ -27,7 +27,7 @@
 
 import os
 import datetime
-import iso8601
+from in_toto.trackcopy.iso8601 import parse_date
 import fnmatch
 import logging
 from dateutil import tz
@@ -250,7 +250,7 @@ def verify_layout_expiration(layout):
     None.
 
   """
-  expire_datetime = iso8601.parse_date(layout.expires)
+  expire_datetime = parse_date(layout.expires)
   if expire_datetime < datetime.datetime.now(tz.tzutc()):
     raise LayoutExpiredError("Layout expired")
 
