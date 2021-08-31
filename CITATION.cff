@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+title: "in-toto: Providing farm-to-table guarantees for bits and bytes"
+message: 'If you use in-toto, please cite it!'
+authors:
+  - given-names: Santiago
+    family-names: Torres-Arias
+  - given-names: Hammad
+    family-names: Afzali
+  - given-names: Trishank Karthik
+    family-names: Kuppusamy
+  - given-names: Reza
+    family-names: Curtmola
+  - given-names: Justin
+    family-names: Cappos
+preferred-citation:
+  type: conference
+  authors:
+    - given-names: Santiago
+      family-names: Torres-Arias
+    - given-names: Hammad
+      family-names: Afzali
+    - given-names: Trishank Karthik
+      family-names: Kuppusamy
+    - given-names: Reza
+      family-names: Curtmola
+    - given-names: Justin
+      family-names: Cappos
+  title: "in-toto: Providing farm-to-table guarantees for bits and bytes"
+  year: 2019
+  collection-title: 28th USENIX Security Symposium (USENIX Security 19)
+  conference:
+    name: "USENIX Security 19"
+    location: "Santa Clara, CA"
+  start: 1393
+  end: 1410
+  identifiers:
+    - type: url
+      value: "https://www.usenix.org/conference/usenixsecurity19/presentation/torres-arias"
