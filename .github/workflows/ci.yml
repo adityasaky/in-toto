@@ -14,10 +14,19 @@ jobs:
         toxenv: [py]
         include:
           # TODO: Change to 3.x once pylint fully supports Python 3.9
-          - python-version: 3.8
+          - python-version: '3.8'
             os: ubuntu-latest
             toxenv: lint
-
+          - python-version: '3.7'
+            os: windows-latest
+            toxenv: py
+          - python-version: '3.9'
+            os: windows-latest
+            toxenv: py
+          - python-version: '3.10'
+            os: windows-latest
+            toxenv: py
+          
     runs-on: ${{ matrix.os }}
 
     steps:
