@@ -209,6 +209,27 @@ def _subprocess_run_duplicate_streams(cmd, timeout):
     # interactive commands like `vi`.
     stdout_fd, stdout_name = tempfile.mkstemp()
     stderr_fd, stderr_name = tempfile.mkstemp()
+
+    # Store stream results in mutable dict to update it inside nested helper
+    _std = {"out": "", "err": ""}
+
+    def _duplicate_streams():
+        """Helper to read from child process standard streams, write their
+        contents to parent process standard streams, and build up return values
+        for outer function.
+        """
+        # Read until EOF but at most `io.DEFAULT_BUFFER_SIZE` bytes per call.
+        # Reading and writing in reasonably sized chunks prevents us from
+        # subverting a timeout, due to being busy for too long or indefinitely.
+        stdout_part = stdout_reader.read(io.DEFAULT_BUFFER_SIZE)
+        stderr_part = stderr_reader.read(io.DEFAULT_BUFFER_SIZE)
+        sys.stdout.write(stdout_part)
+        sys.stderr.write(stderr_part)
+        sys.stdout.flush()
+        sys.stderr.flush()
+        _std["out"] += stdout_part
+        _std["err"] += stderr_part
+
     try:
         with io.open(  # pylint: disable=unspecified-encoding
             stdout_name, "r"
@@ -219,25 +240,6 @@ def _subprocess_run_duplicate_streams(cmd, timeout):
         ) as stderr_reader, os.fdopen(
             stderr_fd, "w"
         ) as stderr_writer:
-            # Store stream results in mutable dict to update it inside nested helper
-            _std = {"out": "", "err": ""}
-
-            def _duplicate_streams():
-                """Helper to read from child process standard streams, write their
-                contents to parent process standard streams, and build up return values
-                for outer function.
-                """
-                # Read until EOF but at most `io.DEFAULT_BUFFER_SIZE` bytes per call.
-                # Reading and writing in reasonably sized chunks prevents us from
-                # subverting a timeout, due to being busy for too long or indefinitely.
-                stdout_part = stdout_reader.read(io.DEFAULT_BUFFER_SIZE)
-                stderr_part = stderr_reader.read(io.DEFAULT_BUFFER_SIZE)
-                sys.stdout.write(stdout_part)
-                sys.stderr.write(stderr_part)
-                sys.stdout.flush()
-                sys.stderr.flush()
-                _std["out"] += stdout_part
-                _std["err"] += stderr_part
 
             # Start child process, writing its standard streams to temporary files
             with subprocess.Popen(  # nosec
